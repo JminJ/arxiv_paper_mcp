@@ -1,0 +1,20 @@
+{
+  "name": "arxiv paper mcp dev container",
+  "build": {
+		"dockerfile": "Dockerfile"
+	},
+  "features": {},
+  "postCreateCommand": "",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "njpwerner.autodocstring",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-toolsai.jupyter",
+        "eamodio.gitlens"
+      ]
+    }
+  }
+}

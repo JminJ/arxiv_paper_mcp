@@ -1,0 +1,37 @@
+[project]
+name = "arxiv-paper-mcp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.8.1",
+    "feedparser>=6.0.11",
+    "icecream>=2.1.4",
+    "langchain>=0.3.26",
+    "langchain-google-genai>=2.1.5",
+    "langchain-openai>=0.3.24",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.4.0", "pytest-asyncio>=1.0.0", "ruff>=0.11.13"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+fix = true
+unsafe-fixes = false
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+] # 예: pyflakes(F), pycodestyle(E), isort(I), flake8-bugbear(B)
+ignore = ["E501"] # 예: 너무 긴 줄 경고 무시
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
