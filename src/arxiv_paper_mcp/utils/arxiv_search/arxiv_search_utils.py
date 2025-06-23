@@ -41,6 +41,7 @@ class ArxivSearchUtils:
 
         return using_value
 
+
     def request_arxiv_api_by_search_query(self, search_query:str):
         """search_query를 기반으로 arxiv api에서 논문들을 조회합니다.
 
