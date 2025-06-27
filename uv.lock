@@ -43,6 +43,7 @@ dependencies = [
     { name = "langchain" },
     { name = "langchain-google-genai" },
     { name = "langchain-openai" },
+    { name = "wget" },
 ]
 
 [package.dev-dependencies]
@@ -60,6 +61,7 @@ requires-dist = [
     { name = "langchain", specifier = ">=0.3.26" },
     { name = "langchain-google-genai", specifier = ">=2.1.5" },
     { name = "langchain-openai", specifier = ">=0.3.24" },
+    { name = "wget", specifier = ">=3.2" },
 ]
 
 [package.metadata.requires-dev]
@@ -1640,6 +1642,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/de/ad/713be230bcda622ea
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6d/0d/8adfeaa62945f90d19ddc461c55f4a50c258af7662d34b6a3d5d1f8646f6/uvicorn-0.34.3-py3-none-any.whl", hash = "sha256:16246631db62bdfbf069b0645177d6e8a77ba950cfedbfd093acef9444e4d885", size = 62431, upload-time = "2025-06-01T07:48:15.664Z" },
 ]
+
+[[package]]
+name = "wget"
+version = "3.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/47/6a/62e288da7bcda82b935ff0c6cfe542970f04e29c756b0e147251b2fb251f/wget-3.2.zip", hash = "sha256:35e630eca2aa50ce998b9b1a127bb26b30dfee573702782aa982f875e3f16061", size = 10857, upload-time = "2015-10-22T15:26:37.51Z" }
 
 [[package]]
 name = "zstandard"
