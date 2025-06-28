@@ -9,7 +9,7 @@ from src.arxiv_paper_mcp.utils.arxiv_utils.arxiv_search_utils import (
 arxiv_search_utils = ArxivSearchUtils()
 
 mcp_server = FastMCP(
-    name="Arxiv paper MCP server",
+    name="Arxiv Paper MCP Server",
     instructions="Search papers from Arxiv API that user want to search."
 )
 
