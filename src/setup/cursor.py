@@ -124,4 +124,18 @@ def install_to_cursor(env_vars: List[str]):
     setting_mcp_json(server_name=mcp_server_name, env_vars=env_dict)
 
 if __name__ == "__main__":
-    print(get_workspace_path())
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser()
+    parser.add_argument(
+        "--env",
+        "-e",
+        action="append",
+        help="ENV args to set for the server."
+    )
+
+    args = parser.parse_args()
+
+    install_to_cursor(
+        env_vars=args.env
+    )
