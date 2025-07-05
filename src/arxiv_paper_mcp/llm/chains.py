@@ -5,8 +5,8 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableSerializable
 
-from src.arxiv_paper_mcp.llm_chains.llm_define import LLM_MODEL
-from src.arxiv_paper_mcp.llm_chains.prompts import ARXIV_PROMPTS
+from src.arxiv_paper_mcp.llm.llm_define import LLM_MODEL
+from src.arxiv_paper_mcp.llm.prompts import ARXIV_PROMPTS, PAPER_PROMPTS
 
 
 def define_chat_prompt_chain(using_prompt:List[Tuple], llm_model:_ConfigurableModel)->RunnableSerializable:
@@ -30,5 +30,10 @@ def define_chat_prompt_chain(using_prompt:List[Tuple], llm_model:_ConfigurableMo
 ## define chains
 arxiv_search_query_generation_chain = define_chat_prompt_chain(
     using_prompt=ARXIV_PROMPTS["ARXIV_SEARCH_QUERY_GENERATION"],
+    llm_model=LLM_MODEL
+)
+
+paper_index_extract_chain = define_chat_prompt_chain(
+    using_prompt=PAPER_PROMPTS["PAPER_INDEX_QUERY_GENERATION"],
     llm_model=LLM_MODEL
 )

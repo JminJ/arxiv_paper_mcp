@@ -31,7 +31,35 @@ ARXIV_SEARCH_QUERY_GENERATION_PROMPT = [
     )
 ]
 
+PAPER_INDEX_QUERY_GENERATION_PROMPT = [
+    (
+        "system",
+        """
+        ## SYSTEM MESSAGE
+        Your task is extract contents(table of contents) from paper page content.
+
+        ## OUTPUT FORMAT
+        Output format should be List[str].
+        <EXAMPLE>
+            [
+                "Introduction",
+                "...", 
+                ...
+            ]
+        </EXAMPLE>
+        """
+    ),
+    (
+        "user",
+        "{paper_page_content}"
+    )
+]
+
 
 ARXIV_PROMPTS = {
-    "ARXIV_SEARCH_QUERY_GENERATION": ARXIV_SEARCH_QUERY_GENERATION_PROMPT
+    "ARXIV_SEARCH_QUERY_GENERATION": ARXIV_SEARCH_QUERY_GENERATION_PROMPT,
+}
+
+PAPER_PROMPTS = {
+    "PAPER_INDEX_QUERY_GENERATION": PAPER_INDEX_QUERY_GENERATION_PROMPT
 }
