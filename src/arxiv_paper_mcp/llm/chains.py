@@ -33,7 +33,7 @@ arxiv_search_query_generation_chain = define_chat_prompt_chain(
     llm_model=LLM_MODEL
 )
 
-paper_index_extract_chain = define_chat_prompt_chain(
-    using_prompt=PAPER_PROMPTS["PAPER_INDEX_QUERY_GENERATION"],
+paper_section_extract_chain = define_chat_prompt_chain(
+    using_prompt=PAPER_PROMPTS["PAPER_SECTION_QUERY_GENERATION"],
     llm_model=LLM_MODEL
 )
