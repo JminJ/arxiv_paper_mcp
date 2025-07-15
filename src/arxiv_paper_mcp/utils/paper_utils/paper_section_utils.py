@@ -1,10 +1,6 @@
-import sys
-
-sys.path.append("/workspaces/arxiv_paper_mcp")
-
-import os
 import ast
 import asyncio
+import os
 from typing import Dict, List, Tuple
 
 from icecream import ic
@@ -14,8 +10,10 @@ from src.arxiv_paper_mcp.config.global_resources import PDF_SECTION_SAVE_PATH
 from src.arxiv_paper_mcp.llm.chains import paper_section_extract_chain
 from src.arxiv_paper_mcp.utils.common.common_utils import (
     check_directory,
-    mkdir_directory,
     extract_paper_id_from_path,
+    get_target_paper_section_dir_path,
+    get_target_paper_section_file_path,
+    mkdir_directory,
 )
 from src.arxiv_paper_mcp.utils.common.llm_output_postprocess import (
     extract_codeblock_content,
@@ -83,8 +81,7 @@ class PaperSectionExtractUtils:
         
         # 1. 현재 pdf 목차 저장 디렉토리 생성
         paper_pdf_name = extract_paper_id_from_path(paper_pdf_path)
-        temp_paper_pdf_directory_path = os.path.join(PDF_SECTION_SAVE_PATH, paper_pdf_name)
-        print(temp_paper_pdf_directory_path)
+        temp_paper_pdf_directory_path = get_target_paper_section_dir_path(paper_pdf_name)
         mkdir_directory(temp_paper_pdf_directory_path)
 
         # 2. 목차 txt파일 저장
@@ -130,21 +127,18 @@ class PaperSectionExtractUtils:
         self.__save_section_infos(pdf_file_path, each_sections_page_number_info)
 
 
-class PaperSectionSaveUtils:
-    def __init__(self):
-        pass
-    
-        
+def load_paper_section_infos(paper_id:str)->str:
+    """논문 섹션 정보를 읽어와 str으로 반환
 
-async def main():
-    paper_section_extract_utils = PaperSectionExtractUtils()
-    await paper_section_extract_utils.extract_sections_main("/workspaces/arxiv_paper_mcp/src/arxiv_paper_mcp/data/paper_pdf/2505.13006.pdf")
+    Args:
+        paper_id (str): 대상 논문 paper id
 
-if __name__ == "__main__":
-    import asyncio
+    Returns:
+        str: 섹션 내용
+    """
+    section_file_path = get_target_paper_section_file_path(paper_id)
 
-    from dotenv import find_dotenv, load_dotenv
+    with open(section_file_path, "r") as f:
+        section_infos = f.readlines()
 
-    load_dotenv(find_dotenv(), override=True)
-    asyncio.run(main())
-
+    return section_infos[0] # 단일 라인으로 저장되므로
