@@ -37,3 +37,8 @@ paper_section_extract_chain = define_chat_prompt_chain(
     using_prompt=PAPER_PROMPTS["PAPER_SECTION_QUERY_GENERATION"],
     llm_model=LLM_MODEL
 )
+
+paper_description_chain = define_chat_prompt_chain(
+    using_prompt=PAPER_PROMPTS["PAPER_ANALYSIS_GENERATION_PROMPT"],
+    llm_model=LLM_MODEL
+)

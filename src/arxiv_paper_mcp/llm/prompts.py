@@ -55,11 +55,37 @@ PAPER_INDEX_QUERY_GENERATION_PROMPT = [
     )
 ]
 
+PAPER_ANALYSIS_GENERATION_PROMPT = [
+    (
+        "system",
+        """
+        ## SYSTEM MESSAGE
+        User will ask to you about paper contents(principles, concepts, formulas, etc). 
+        Your job is be answering them refer to contents from paper.
+
+        When answering to user, be follow these rules:
+        1. Analyze based on given contents from paper.
+        2. If you need, when explaining a thesis, explain the necessary concepts so that even high school students can fully understand it.
+        """
+    ),
+    (
+        "user",
+        """
+        ## USER QUESTION
+        {user_question}
+
+        ## PAPER CONTENT
+        {paper_content}
+        """
+    )
+]
+
 
 ARXIV_PROMPTS = {
     "ARXIV_SEARCH_QUERY_GENERATION": ARXIV_SEARCH_QUERY_GENERATION_PROMPT,
 }
 
 PAPER_PROMPTS = {
-    "PAPER_SECTION_QUERY_GENERATION": PAPER_INDEX_QUERY_GENERATION_PROMPT
+    "PAPER_SECTION_QUERY_GENERATION": PAPER_INDEX_QUERY_GENERATION_PROMPT,
+    "PAPER_ANALYSIS_GENERATION_PROMPT": PAPER_ANALYSIS_GENERATION_PROMPT
 }
