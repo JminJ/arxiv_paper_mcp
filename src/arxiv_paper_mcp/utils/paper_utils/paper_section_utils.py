@@ -7,18 +7,24 @@ from icecream import ic
 from PyPDF2 import PdfReader
 
 from src.arxiv_paper_mcp.config.global_resources import PDF_SECTION_SAVE_PATH
-from src.arxiv_paper_mcp.llm.chains import paper_section_extract_chain
+from src.arxiv_paper_mcp.llm.chains import (
+    paper_section_extract_chain,
+    paper_target_section_select_chain,
+)
 from src.arxiv_paper_mcp.utils.common.common_utils import (
     check_directory,
     extract_paper_id_from_path,
-    get_target_paper_section_dir_path,
-    get_target_paper_section_file_path,
     mkdir_directory,
 )
 from src.arxiv_paper_mcp.utils.common.llm_output_postprocess import (
     extract_codeblock_content,
 )
-from src.arxiv_paper_mcp.utils.common.pdf_handling import extract_all_text_each_page
+from src.arxiv_paper_mcp.utils.common.pdf_handling import (
+    extract_all_text_each_page,
+    extract_target_page_contents,
+    get_target_paper_section_dir_path,
+    get_target_paper_section_file_path,
+)
 
 
 class PaperSectionExtractUtils:
@@ -127,18 +133,92 @@ class PaperSectionExtractUtils:
         self.__save_section_infos(pdf_file_path, each_sections_page_number_info)
 
 
-def load_paper_section_infos(paper_id:str)->str:
+def load_paper_section_infos(paper_id:str)->Dict[str, List[int]]:
     """논문 섹션 정보를 읽어와 str으로 반환
 
     Args:
         paper_id (str): 대상 논문 paper id
 
     Returns:
-        str: 섹션 내용
+        Dict[str, List[int]]: 섹션, 페이지 정보 dict 
     """
     section_file_path = get_target_paper_section_file_path(paper_id)
 
     with open(section_file_path, "r") as f:
         section_infos = f.readlines()
 
-    return section_infos[0] # 단일 라인으로 저장되므로
+    return ast.literal_eval(section_infos[0]) # 단일 라인으로 저장되므로
+
+async def get_section_names_by_llm(user_question:str, paper_section_infos:Dict[str, List[int]])->List[str]:
+    """llm chain을 통해 사용자 입력에서 대상 섹션명을 추출
+
+    Args:
+        user_question (str): 사용자 입력 질문 내용
+        paper_section_infos (Dict[str, List[int]]): 대상 논문의 섹션 정보
+
+    Returns:
+        List[str]: 추출된 섹션명 리스트
+    """
+    extracted_section_names = await paper_target_section_select_chain.ainvoke(
+        input={
+            "user_question": user_question,
+            "paper_sections": paper_section_infos
+        }
+    )   
+    extracted_section_names = ast.literal_eval(extract_codeblock_content(extracted_section_names))
+    
+    return extracted_section_names
+
+
+def return_target_section_pages(paper_id:str, section_names:List[str], user_question:str)->List[str]:
+    """대상 섹션 페이지 내용을 반환합니다.
+
+    Args:
+        paper_id (str): 대상 논문 arxiv id
+        section_names (List[str]): 추출한 섹션명들
+        user_question (str): 사용자 질문 내용
+
+    Returns:
+        List[str]: 대상 섹션에 대한 페이지 내용
+    """
+
+    def need_or_not_llm_check(section_names:List[str], paper_section_infos:Dict[str, List[int]])->bool:
+        """section 명들에 대해 llm 기반 분석이 필요한지 체크합니다.
+        
+        Args:
+            section_names (List[str]): 사용자 입력 section 명들
+
+        Returns:
+            bool: llm 분석이 필요한지 여부
+        """
+        need_llm_checks = []
+        for section_name in section_names:
+            if section_name not in list(paper_section_infos.keys()):
+                need_llm_checks.append(True)
+            else:
+                need_llm_checks.append(False)
+
+        return all(need_llm_checks)
+
+    # 1. 대상 논문의 섹션 정보를 추출
+    target_paper_sections = load_paper_section_infos(paper_id)
+
+    # 2. 사용할 섹션이 있는 페이지 번호들을 추출
+    using_page_numbers = []
+    need_llm_check_result = need_or_not_llm_check(section_names, target_paper_sections) # llm 기반 섹션명 검색이 필요한지 아닌지 체크
+    if need_llm_check_result: 
+        section_names = get_section_names_by_llm(user_question, paper_section_infos=target_paper_sections)
+    for section_name in section_names:
+        section_page_numbers = target_paper_sections[section_name]
+        using_page_numbers.extend(section_page_numbers)
+        
+    # 3. 페이지 텍스트 추출 및 반환
+    page_text_contents = extract_target_page_contents(paper_id=paper_id, target_page_numbers=using_page_numbers)
+    return page_text_contents
+
+    
+
+
+         
+
+
