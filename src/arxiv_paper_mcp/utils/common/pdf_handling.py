@@ -1,19 +1,12 @@
-from typing import Dict
+import os
+from typing import Dict, List
 
 from PyPDF2 import PdfReader
 
-# def open_pdf_file(target_pdf_path:str)->PdfReader:
-#     """대상 pdf파일의 PdfReader를 반환
-
-#     Args:
-#         target_pdf_path (str): 대상 pdf파일
-
-#     Returns:
-#         PdfReader
-#     """
-#     target_pdf_reader = PdfReader(target_pdf_path)
-
-#     return target_pdf_reader
+from src.arxiv_paper_mcp.config.global_resources import (
+    PDF_DOWNLOAD_PATH,
+    PDF_SECTION_SAVE_PATH,
+)
 
 
 def extract_all_text_each_page(target_pdf_reader: PdfReader)->Dict[int, str]:
@@ -31,3 +24,66 @@ def extract_all_text_each_page(target_pdf_reader: PdfReader)->Dict[int, str]:
         each_page_dict[page_number] = page.extract_text()
 
     return each_page_dict
+
+
+def get_target_paper_section_dir_path(paper_id:str)->str:
+    """논문 id 기반으로 목차 디렉토리 경로를 반환합니다.
+
+    Args:
+        paper_id (str): 대상 논문 paper id
+
+    Returns:
+        str: 목차 파일 경로
+    """
+    return os.path.join(PDF_SECTION_SAVE_PATH, paper_id)
+
+
+def get_target_paper_section_file_path(paper_id:str)->str:
+    """논문 id 기반으로 목차 파일 경로를 반환합니다.
+
+    Args:
+        paper_id (str): 대상 논문 paper id
+
+    Returns:
+        str: 목차 파일 경로
+    """
+    temp_paper_pdf_directory_path = get_target_paper_section_dir_path(paper_id)
+    return os.path.join(temp_paper_pdf_directory_path, "sections_info.txt")
+
+
+def get_target_paper_pdf_file_path(paper_id:str)->str:
+    """논문 id를 기반으로 pdf파일 경로를 반환합니다.
+
+    Args:
+        paper_id (str): 대상 논문 id
+
+    Returns:
+        str: 저장된 pdf 파일 경로
+    """
+    return os.path.join(PDF_DOWNLOAD_PATH, f"{paper_id}.pdf")
+
+
+def extract_target_page_contents(paper_id: str, target_page_numbers:List[int])->List[str]:
+    """대상 페이지 번호에 대한 페이지 내용들을 추출, 반환
+
+    Args:
+        paper_id (str): 대상 논문 arxiv id
+        target_page_numbers (List[int]): 대상 페이지 번호 리스트
+
+    Returns:
+        List[str]: 대상 페이지 추출한 내용 리스트
+    """
+    page_content_list = []
+
+    paper_path = get_target_paper_pdf_file_path(paper_id) # 대상 논문 pdf 파일 경로 반환
+    paper_loader = PdfReader(paper_path)
+
+    for page_number in target_page_numbers:
+        page_content_list.append(paper_loader.pages[page_number].extract_text())
+
+    return page_content_list
+
+
+if __name__ == "__main__":
+    result = extract_target_page_contents(paper_id="2505.13006", target_page_numbers=[0,1])
+    print(result)
