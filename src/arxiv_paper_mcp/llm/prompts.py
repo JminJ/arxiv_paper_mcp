@@ -80,6 +80,35 @@ PAPER_ANALYSIS_GENERATION_PROMPT = [
     )
 ]
 
+PAPER_TARGET_SECTION_SECTION_PROMPT = [
+    (
+        "system",
+        """
+        ## SYSTEM MESSAGE
+        Select collect section that user want to listen explaination based on user question.
+        User will give paper sections and user question to you.
+        Return collect section names.
+
+
+        ## OUTPUT FORMAT
+        Output format should be List[str]. Refer to example.
+        <EXAMPLE>
+        ["Introduction", "Abastract"]
+        </EXAMPLE>
+        """
+    ),
+    (
+        "user",
+        """
+        ## USER QUSTION
+        {user_question}
+
+        ## PAPER SECTION
+        {paper_sections}
+        """
+    )
+]
+
 
 ARXIV_PROMPTS = {
     "ARXIV_SEARCH_QUERY_GENERATION": ARXIV_SEARCH_QUERY_GENERATION_PROMPT,
@@ -87,5 +116,6 @@ ARXIV_PROMPTS = {
 
 PAPER_PROMPTS = {
     "PAPER_SECTION_QUERY_GENERATION": PAPER_INDEX_QUERY_GENERATION_PROMPT,
-    "PAPER_ANALYSIS_GENERATION_PROMPT": PAPER_ANALYSIS_GENERATION_PROMPT
+    "PAPER_ANALYSIS_GENERATION_PROMPT": PAPER_ANALYSIS_GENERATION_PROMPT,
+    "PAPER_TARGET_SECTION_SELECT_PROMPT": PAPER_TARGET_SECTION_SECTION_PROMPT
 }
