@@ -133,6 +133,9 @@ class PaperSectionExtractUtils:
         self.__save_section_infos(pdf_file_path, each_sections_page_number_info)
 
 
+paper_section_extract_utils = PaperSectionExtractUtils()
+
+
 def load_paper_section_infos(paper_id:str)->Dict[str, List[int]]:
     """논문 섹션 정보를 읽어와 str으로 반환
 
@@ -148,6 +151,7 @@ def load_paper_section_infos(paper_id:str)->Dict[str, List[int]]:
         section_infos = f.readlines()
 
     return ast.literal_eval(section_infos[0]) # 단일 라인으로 저장되므로
+
 
 async def get_section_names_by_llm(user_question:str, paper_section_infos:Dict[str, List[int]])->List[str]:
     """llm chain을 통해 사용자 입력에서 대상 섹션명을 추출
@@ -181,7 +185,6 @@ def return_target_section_pages(paper_id:str, section_names:List[str], user_ques
     Returns:
         List[str]: 대상 섹션에 대한 페이지 내용
     """
-
     def need_or_not_llm_check(section_names:List[str], paper_section_infos:Dict[str, List[int]])->bool:
         """section 명들에 대해 llm 기반 분석이 필요한지 체크합니다.
         

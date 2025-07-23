@@ -8,9 +8,12 @@ from src.arxiv_paper_mcp.utils.common.common_utils import (
     check_directory,
     mkdir_directory,
 )
+from src.arxiv_paper_mcp.utils.paper_utils.paper_section_utils import (
+    paper_section_extract_utils,
+)
 
 
-def paper_pdf_download(paper_id:str):
+async def paper_pdf_download(paper_id:str):
     """논문 pdf 파일을 다운로드합니다.
 
     Args:
@@ -23,10 +26,13 @@ def paper_pdf_download(paper_id:str):
     if not check_directory(PDF_DOWNLOAD_PATH): # 상위 디렉토리 체크 및 생성
         mkdir_directory(PDF_DOWNLOAD_PATH)
     wget.download(http_pdf_url_format, pdf_download_path)
+    await paper_section_extract_utils.extract_sections_main(pdf_file_path=pdf_download_path) # 섹션 추출 적용
 
 
 if __name__ == "__main__":
+    import asyncio
+
     paper_id = "2505.13006"
-    paper_pdf_download(
+    asyncio.run(paper_pdf_download(
         paper_id,
-    )
+    ))
