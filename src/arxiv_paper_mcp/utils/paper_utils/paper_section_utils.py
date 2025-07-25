@@ -174,7 +174,7 @@ async def get_section_names_by_llm(user_question:str, paper_section_infos:Dict[s
     return extracted_section_names
 
 
-def return_target_section_pages(paper_id:str, section_names:List[str], user_question:str)->List[str]:
+async def return_target_section_pages(paper_id:str, section_names:List[str], user_question:str)->List[str]:
     """대상 섹션 페이지 내용을 반환합니다.
 
     Args:
@@ -210,7 +210,8 @@ def return_target_section_pages(paper_id:str, section_names:List[str], user_ques
     using_page_numbers = []
     need_llm_check_result = need_or_not_llm_check(section_names, target_paper_sections) # llm 기반 섹션명 검색이 필요한지 아닌지 체크
     if need_llm_check_result: 
-        section_names = get_section_names_by_llm(user_question, paper_section_infos=target_paper_sections)
+        section_names = await get_section_names_by_llm(user_question, paper_section_infos=target_paper_sections)
+    print(section_names)
     for section_name in section_names:
         section_page_numbers = target_paper_sections[section_name]
         using_page_numbers.extend(section_page_numbers)
