@@ -70,12 +70,13 @@ class ArxivSearchUtils:
             Dict: 결과
         """
         # 1. LLM 기반 arxiv api search query 생성
-        search_query = extract_codeblock_content(arxiv_search_query_generation_chain.invoke(
-            input={
-                "user_question": user_question
-            }
-        ))
-        print(search_query)
+        search_query = extract_codeblock_content(
+            arxiv_search_query_generation_chain.invoke(
+                input={
+                    "user_question": user_question
+                }
+            )
+        )
         # 2. arxiv api 검색 결과 반환
         searched_paper_infos = self.request_arxiv_api_by_search_query(search_query=search_query)
         return searched_paper_infos

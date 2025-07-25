@@ -219,9 +219,14 @@ def return_target_section_pages(paper_id:str, section_names:List[str], user_ques
     page_text_contents = extract_target_page_contents(paper_id=paper_id, target_page_numbers=using_page_numbers)
     return page_text_contents
 
+
+if __name__ == "__main__":
+    import asyncio
+
+    from icecream import ic
+
+    reuslt = asyncio.run(paper_section_extract_utils.extract_sections_main(
+        pdf_file_path="/workspaces/arxiv_paper_mcp/src/arxiv_paper_mcp/data/paper_pdf/2505.13006.pdf"
+    ))
+    ic(result)
     
-
-
-         
-
-
