@@ -40,6 +40,7 @@ PAPER_INDEX_QUERY_GENERATION_PROMPT = [
 
         ## OUTPUT FORMAT
         Output format should be List[str].
+        <IMPORTANT>**Don't generate other annotations.**</IMPORTANT>
         <EXAMPLE>
             [
                 "Introduction",
