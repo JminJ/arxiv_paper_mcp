@@ -1,12 +1,6 @@
 from typing import Dict, List
 
 from src.arxiv_paper_mcp.llm.chains import paper_description_chain
-from src.arxiv_paper_mcp.utils.common.common_utils import (
-    get_target_paper_section_file_path,
-)
-from src.arxiv_paper_mcp.utils.paper_utils.paper_download_utils import (
-    paper_download_utils,
-)
 from src.arxiv_paper_mcp.utils.paper_utils.paper_section_utils import (
     paper_section_extract_utils,
     return_target_section_pages,
@@ -24,7 +18,7 @@ async def analyze_target_paper(paper_id:str, section_names:List[str], raw_user_q
     Returns:
         str: 설명 결과 텍스트
     """
-    section_contents = return_target_section_pages(
+    section_contents = await return_target_section_pages(
         paper_id,
         section_names,
         user_question=raw_user_question
@@ -32,13 +26,26 @@ async def analyze_target_paper(paper_id:str, section_names:List[str], raw_user_q
     paper_analysis_result = await paper_description_chain.ainvoke(
         input={
             "user_question": raw_user_question,
-            "paper_sections": section_contents
+            "paper_content": section_contents
         }
     )
 
     return paper_analysis_result
 
 
+if __name__ == "__main__":
+    import asyncio
 
+    from icecream import ic
+
+    result = asyncio.run(
+        analyze_target_paper(
+            paper_id="2505.13006",
+            section_names=[""],
+            raw_user_question="논문에서 제시하는 Knowledge Graph 기반 RAG (Graph RAG) 기법에 대해 설명해주세요"
+        )
+    )
+
+    ic(result)
 
         
