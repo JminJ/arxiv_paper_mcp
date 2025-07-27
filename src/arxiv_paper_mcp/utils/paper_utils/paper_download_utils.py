@@ -32,7 +32,7 @@ async def paper_pdf_download(paper_id:str):
 if __name__ == "__main__":
     import asyncio
 
-    paper_id = "2505.13006"
+    paper_id = "2507.10524"
     asyncio.run(paper_pdf_download(
         paper_id,
     ))
