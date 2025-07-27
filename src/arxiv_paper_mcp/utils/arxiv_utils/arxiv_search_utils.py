@@ -4,7 +4,7 @@ from typing import Dict, List
 
 import feedparser
 
-from src.arxiv_paper_mcp.llm_chains.chains import arxiv_search_query_generation_chain
+from src.arxiv_paper_mcp.llm.chains import arxiv_search_query_generation_chain
 from src.arxiv_paper_mcp.utils.common.llm_output_postprocess import (
     extract_codeblock_content,
 )
