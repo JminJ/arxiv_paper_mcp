@@ -1,5 +1,5 @@
 # Arxiv Paper MCP Server
-<img src="resource/arxiv_mcp_mcp.png" width="500" height="500">
+<img src="./resource/arxiv_mcp_icon.png" width="500" height="500">
 
 MCP(Model Context Protocol) server can search papersfrom arxiv api.
 
