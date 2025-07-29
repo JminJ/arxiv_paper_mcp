@@ -1,5 +1,5 @@
 # Arxiv Paper MCP Server
-<img src="resource/arxiv_mcp_mcp.png" width="300" height="300">
+<img src="resource/arxiv_mcp_mcp.png" width="500" height="500">
 
 MCP(Model Context Protocol) server can search papersfrom arxiv api.
 
@@ -23,14 +23,37 @@ python -m src.setup.cursor \
 ```
 
 ## 3. Support Tool
-### search_papers_based_user_query
+### a. search_papers_based_user_query
 Search papers from Arxiv API that user want to search.
-
 **Example**
 ```
 Q: I want to search recent papers in NLP domain.
 ```
-<img src="./resource/search_papers_based_user_query_tool_example.png">
+<img src="./resource/search_papers_based_user_query_tool_example.png" width="550">
+
+### b. paper_download_tool
+Download paper by user given arxiv id.
+**Example**
+```
+Q: Download 1706.03762 paper.
+```
+<img src="./resource/download_paper_tool.png" width="550">
+
+### c. return_section_names_tool
+Return section names of target paper.
+**Example**
+```
+Q: showing section of 1706.03762 paper to me.
+```
+<img src="./resource/paper_section_names_tool.png" width="550">
+
+### d. description_paper_content
+Descrive paper content and section from user question.
+**Example**
+```
+Q: Descrive "Model Architecture" section to me.
+```
+<img src="./resource/descrive_paper_tool.png" width="550">
 
 ## 4. License
 This project is open source software licensed as MIT.
