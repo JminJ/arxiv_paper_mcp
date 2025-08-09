@@ -16,8 +16,8 @@ ADD https://astral.sh/uv/install.sh /uv-installer.sh
 # Run the installer then remove it
 RUN sh /uv-installer.sh && rm /uv-installer.sh
 
-# uv 설치 경로를 PATH에 추가 (기본 설치 위치: /root/.cargo/bin)
-ENV PATH="/root/.cargo/bin:$PATH"
+# uv 설치 경로를 PATH에 추가
+ENV PATH="/root/.local/bin/:$PATH"
 WORKDIR /workspaces
 
 COPY . .
