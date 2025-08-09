@@ -4,16 +4,16 @@ build:
   dockerBuildPath: "."
   
 startCommand:
-  type: stdio
+  type: "stdio"
   configSchema:
-    type: object
+    type: "object"
     required: ["GOOGLE_API_KEY", "USING_MODEL_INFO"]
     properties:
       GOOGLE_API_KEY:
-        type: string
+        type: "string"
         description: "Google LLM API key"
       USING_MODEL_INFO:
-        type: string
+        type: "string"
         description: "LLM name using for analysis"
       
       
