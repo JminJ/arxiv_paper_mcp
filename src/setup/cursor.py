@@ -81,7 +81,7 @@ def setting_mcp_json(server_name:str, env_vars: Dict[str, str]):
             env_vars = existing_env
 
     # Build run command
-    args = ["-m", "src.arxiv_paper_mcp.server"]
+    args = ["-m", "src.arxiv_paper_mcp.main"]
 
     server_config = {
         "command": "python",
