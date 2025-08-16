@@ -1,5 +1,9 @@
 import os
 
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv())
+
 USING_MODEL_INFO=os.getenv("USING_MODEL_INFO")
 MODEL_TEMPERATURE=0.0
 MODEL_SEED=256
