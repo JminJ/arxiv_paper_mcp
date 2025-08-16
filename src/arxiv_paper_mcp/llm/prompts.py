@@ -37,14 +37,16 @@ PAPER_INDEX_QUERY_GENERATION_PROMPT = [
         """
         ## SYSTEM MESSAGE
         Your task is extract contents(table of contents) from paper page content.
+        Do not extract from the table of contents pages; only output the table of contents when it appears on the actual content pages.
 
         ## OUTPUT FORMAT
         Output format should be List[str].
-        <IMPORTANT>**Don't generate other annotations.**</IMPORTANT>
+        - <IMPORTANT>**Don't generate other annotations.**</IMPORTANT>
+        - Must wrap section names to single quote('')
         <EXAMPLE>
             [
-                "Introduction",
-                "...", 
+                'Introduction',
+                'Abstract', 
                 ...
             ]
         </EXAMPLE>
