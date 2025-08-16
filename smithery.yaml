@@ -1,6 +1,9 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
 startCommand:
   type: stdio
   configSchema:
+    # JSON Schema defining the configuration options for the MCP.
     type: object
     required:
       - GOOGLE_API_KEY
@@ -8,22 +11,28 @@ startCommand:
     properties:
       GOOGLE_API_KEY:
         type: string
-        description: "Google LLM API key"
+        description: Google LLM API key
       USING_MODEL_INFO:
-        type: gstring
-        description: "LLM name using for analysis"
+        type: string
+        description: LLM name using for analysis
   commandFunction:
-    |-
-    (config) => ({
-      command: 'uv',
-      args: ['run', "python", "-m", "src.arxiv_paper_mcp.server"],
-      env: { 
-        GOOGLE_API_KEY: config.GOOGLE_API_KEY,
-        USING_MODEL_INFO: config.USING_MODEL_INFO
-      }
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    "(config) => ({
+
+    \  command: 'uv',
+
+    \  args: ['run', \"python\", \"-m\", \"src.arxiv_paper_mcp.server\"],
+
+    \  env: {\ 
+
+    \    GOOGLE_API_KEY: config.GOOGLE_API_KEY ,
+
+    \    USING_MODEL_INFO: config.USING_MODEL_INFO
+
+    \  }
+
     })
-  exampleConfig:
-    GOOGLE_API_KEY: YOUR_API_KEY_HERE
-    USING_MODEL_INFO: USING_MODEL_NAME_HERE
-      
-      
+
+    \ \ 
+
+    \  "
