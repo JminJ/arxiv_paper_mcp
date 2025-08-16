@@ -149,7 +149,6 @@ def load_paper_section_infos(paper_id:str)->Dict[str, List[int]]:
 
     with open(section_file_path, "r") as f:
         section_infos = f.readlines()
-
     return ast.literal_eval(section_infos[0]) # 단일 라인으로 저장되므로
 
 

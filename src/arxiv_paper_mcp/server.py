@@ -117,4 +117,3 @@ async def descrive_paper_content(
     )
 
     return llm_result
-    
