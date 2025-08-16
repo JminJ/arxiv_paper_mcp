@@ -1,4 +1,5 @@
 # Arxiv Paper MCP Server
+[![smithery badge](https://smithery.ai/badge/@JminJ/arxiv_paper_mcp)](https://smithery.ai/server/@JminJ/arxiv_paper_mcp)
 <img src="./resource/arxiv_mcp_icon.png" width="500" height="500">
 
 MCP(Model Context Protocol) server can search papersfrom arxiv api.
@@ -8,6 +9,14 @@ MCP(Model Context Protocol) server can search papersfrom arxiv api.
 2. Select using model : This mcp server initialize llm model by langchain's [init_chat_model](https://python.langchain.com/api_reference/langchain/chat_models/langchain.chat_models.base.init_chat_model.html) function. Follow this format **"{model_provider}:{model_name}"**; Example value "google_genai:gemini-2.0-flash".
 
 ## 2. Installation
+### Installing via Smithery
+
+To install Arxiv MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@JminJ/arxiv_paper_mcp):
+
+```bash
+npx -y @smithery/cli install @JminJ/arxiv_paper_mcp --client claude
+```
+
 ### Cursor
 ```sh
 uv sync
