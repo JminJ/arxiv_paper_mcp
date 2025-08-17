@@ -23,4 +23,4 @@ WORKDIR /workspaces
 COPY . .
 RUN uv sync
 
-CMD ["uv", "run", "python", "-m", "src.arxiv_paper_mcp.server"]
+CMD ["uv", "run", "python", "-m", "src.arxiv_paper_mcp.main"]
