@@ -2,6 +2,10 @@ import os
 from pathlib import Path
 
 
+def get_workspace_path():
+    dir_path = Path(__file__).resolve().parent.parent.parent.parent.parent # HACK
+    return dir_path
+
 def check_directory(target_path:str)->bool:
     """디렉토리가 존재하는지 bool 리턴
     """
@@ -27,5 +31,6 @@ def extract_paper_id_from_path(paper_pdf_file_path:str)->str:
 
     return arxiv_paper_id
 
-
-
+if __name__ == "__main__":
+    path = get_workspace_path()
+    print(path)

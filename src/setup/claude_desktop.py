@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 from typing import Dict, List
 
+from src.arxiv_paper_mcp.utils.common.common_utils import get_workspace_path
+
 
 def get_mcp_config_path(user_os:str="mac") -> Path | None:
     """Get the Claude Desktop MCP config directory based on platform.
@@ -10,25 +12,15 @@ def get_mcp_config_path(user_os:str="mac") -> Path | None:
     Args:
         user_os (str): 사용자의 os. default is "mac"
     """
-
     if user_os.lower().strip() == 'mac':
-        path = "~/Library/Application Support/Claude"
+        home_dir = os.path.expanduser('~')
+        path = f"{home_dir}/Library/Application Support/Claude"
     elif user_os.lower().strip() == 'window':
         path = "%APPDATA%/Claude"
-
-    if path.exists():
+    print(Path(path).exists())
+    if Path(path).exists():
         return path
     return None
-
-
-def get_workspace_path() -> Path:
-    """Return path of workspace.
-
-    Returns:
-        Path: directory path of workspace
-    """
-    workspace_path = Path(__file__).parent.parent.parent
-    return workspace_path
 
 
 def write_mcp_json_file(mcp_file_path:str, mcp_file_dict:Dict):
@@ -50,6 +42,7 @@ def check_env_dict(env_dict:Dict[str, str]):
     """
     assert "GOOGLE_API_KEY" in env_dict, "Missing GOOGLE_API_KEY in env."
     assert "USING_MODEL_INFO" in env_dict, "Missing USING_MODEL_INFO in env."
+    assert "UV_PATH" in env_dict, "Missing UV_PATH in env."
 
 
 def setting_mcp_json(server_name:str, env_vars: Dict[str, str]):
@@ -90,21 +83,28 @@ def setting_mcp_json(server_name:str, env_vars: Dict[str, str]):
             env_vars = existing_env
 
     # Build run command
-    args = ["-m", "src.arxiv_paper_mcp.main"]
+    workspace_path = get_workspace_path()
+    args = [
+        "--directory",
+        str(workspace_path),
+        "run",
+        "python",
+        "-m",
+        "src.arxiv_paper_mcp.main"
+    ]
 
     server_config = {
-        "command": "python",
+        "command": "uv",
         "args": args,
     }
 
-    # Add environment variables if specified
-    workspace_path = str(get_workspace_path())
-    env_vars["PYTHONPATH"] = workspace_path # add PYTHONPATH
-    env_vars["PATH"] = os.path.join(workspace_path, ".venv", "bin")+":${PATH}"# add PATH
-    server_config["env"] = env_vars
-
     # CHECK env_vars
-    check_env_dict(env_dict=server_config["env"])
+    # check_env_dict(env_dict=server_config["env"])
+    check_env_dict(env_dict=env_vars)
+
+    # Add environment variables if specified
+    env_vars["PATH"] = os.path.join(env_vars["UV_PATH"], ":/usr/local/bin:/usr/bin:/bin")+":${PATH}"# add PATH
+    server_config["env"] = env_vars
 
     config["mcpServers"][server_name] = server_config
 
@@ -131,6 +131,7 @@ def install_to_claude_desktop(env_vars: List[str]):
     mcp_server_name = "Arxiv Paper MCP Server"
     env_dict = _make_env_dict(env_vars)
     setting_mcp_json(server_name=mcp_server_name, env_vars=env_dict)
+
 
 if __name__ == "__main__":
     from argparse import ArgumentParser
