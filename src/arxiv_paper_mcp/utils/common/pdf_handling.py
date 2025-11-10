@@ -51,6 +51,25 @@ def get_target_paper_section_file_path(paper_id:str)->str:
     return os.path.join(temp_paper_pdf_directory_path, "sections_info.txt")
 
 
+def get_papers_section_list(paper_ids:List[str])->Dict[str, List]:
+    """대상 논문들의 목차 값들을 반환
+
+    Args:
+        paper_ids (List[str]): 대상 논문 arxiv id들. 
+
+    Returns:
+        Dict[str]: 논문 별 목차 정보 dict.
+    """
+    paper_sections = {}
+    for paper_id in paper_ids:
+        temp_paper_path = get_target_paper_section_file_path(paper_id)
+        with open(temp_paper_path, "r") as f:
+            v = eval(f.readline())
+            paper_sections[paper_id] = v
+
+    return paper_sections
+
+        
 def get_target_paper_pdf_file_path(paper_id:str)->str:
     """논문 id를 기반으로 pdf파일 경로를 반환합니다.
 
@@ -85,5 +104,11 @@ def extract_target_page_contents(paper_id: str, target_page_numbers:List[int])->
 
 
 if __name__ == "__main__":
-    result = extract_target_page_contents(paper_id="2505.13006", target_page_numbers=[0,1])
+    # result = extract_target_page_contents(paper_id="2505.13006", target_page_numbers=[0,1])
+    # result = get_target_paper_pdf_file_path(paper_id="2505.13006")
+    result = get_papers_section_list(
+        paper_ids=[
+            "1706.03762",
+        ]
+    )
     print(result)
