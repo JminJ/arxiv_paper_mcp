@@ -62,6 +62,10 @@ PAPER_ANALYSIS_GENERATION_PROMPT = [
     (
         "system",
         """
+        +++Reasoning
+        +++Debate
+        +++Planning
+        
         ## SYSTEM MESSAGE
         User will ask to you about paper contents(principles, concepts, formulas, etc). 
         Your job is be answering them refer to contents from paper.
@@ -112,6 +116,47 @@ PAPER_TARGET_SECTION_SECTION_PROMPT = [
     )
 ]
 
+USING_SECTION_SELECT_PROMPT = [
+    (
+        "system",
+        """
+        +++Debate
+        +++Planning
+        +++OutputFormat(Dict[List[str]])
+
+        ## SYSTEM MESSAGE
+        User will give `raw question` and `paper section infos` that contain paper id, section names.
+        Your job is select section names for answering user raw question perfectly.
+
+        ## OUTPUT FORMAT
+        Output format should be Dict[List[str]]. 
+        Key is paper id, value is list of section names using for generating anwer.
+        Refer to example.
+        <EXAMPLE>
+        ```python
+        {{
+            "PaperId1": ["UsingSectionName1", "UsingSectionName2", ...],
+            "PaperId2": ["UsingSectionName1", "UsingSectionName2", ...],
+            ...
+        }}
+        ```
+        </EXAMPLE>
+        """
+    ),
+    (
+        "user",
+        """
+        ## USER RAW QUESTION
+        {raw_question}
+
+        ## PAPER SECTION INFOS
+        {paper_section_infos}
+        """
+    )
+]
+
+
+
 
 ARXIV_PROMPTS = {
     "ARXIV_SEARCH_QUERY_GENERATION": ARXIV_SEARCH_QUERY_GENERATION_PROMPT,
@@ -120,5 +165,6 @@ ARXIV_PROMPTS = {
 PAPER_PROMPTS = {
     "PAPER_SECTION_QUERY_GENERATION": PAPER_INDEX_QUERY_GENERATION_PROMPT,
     "PAPER_ANALYSIS_GENERATION_PROMPT": PAPER_ANALYSIS_GENERATION_PROMPT,
-    "PAPER_TARGET_SECTION_SELECT_PROMPT": PAPER_TARGET_SECTION_SECTION_PROMPT
+    "PAPER_TARGET_SECTION_SELECT_PROMPT": PAPER_TARGET_SECTION_SECTION_PROMPT,
+    "PAPER_USING_SECTION_SELECT_PROMPT": USING_SECTION_SELECT_PROMPT
 }
