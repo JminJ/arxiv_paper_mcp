@@ -173,13 +173,13 @@ async def get_section_names_by_llm(user_question:str, paper_section_infos:Dict[s
     return extracted_section_names
 
 
-async def return_target_section_pages(paper_id:str, section_names:List[str], user_question:str)->List[str]:
+async def return_target_section_pages(paper_id:str, section_names:List[str], user_question:str=None)->List[str]:
     """대상 섹션 페이지 내용을 반환합니다.
 
     Args:
         paper_id (str): 대상 논문 arxiv id
         section_names (List[str]): 추출한 섹션명들
-        user_question (str): 사용자 질문 내용
+        user_question (str, Optional): 사용자 질문 내용. default is None. 해당 값 입력시에는 llm 기반 섹션명 판단 로직 수행.
 
     Returns:
         List[str]: 대상 섹션에 대한 페이지 내용
@@ -207,9 +207,10 @@ async def return_target_section_pages(paper_id:str, section_names:List[str], use
 
     # 2. 사용할 섹션이 있는 페이지 번호들을 추출
     using_page_numbers = []
-    need_llm_check_result = need_or_not_llm_check(section_names, target_paper_sections) # llm 기반 섹션명 검색이 필요한지 아닌지 체크
-    if need_llm_check_result: 
-        section_names = await get_section_names_by_llm(user_question, paper_section_infos=target_paper_sections)
+    if user_question is not None:
+        need_llm_check_result = need_or_not_llm_check(section_names, target_paper_sections) # llm 기반 섹션명 검색이 필요한지 아닌지 체크
+        if need_llm_check_result: 
+            section_names = await get_section_names_by_llm(user_question, paper_section_infos=target_paper_sections)
     print(section_names)
     for section_name in section_names:
         section_page_numbers = target_paper_sections[section_name]
@@ -226,7 +227,6 @@ if __name__ == "__main__":
     from icecream import ic
 
     reuslt = asyncio.run(paper_section_extract_utils.extract_sections_main(
-        pdf_file_path="/workspaces/arxiv_paper_mcp/src/arxiv_paper_mcp/data/paper_pdf/2505.13006.pdf"
+        pdf_file_path="/workspaces/arxiv_paper_mcp/src/arxiv_paper_mcp/data/paper_pdf/2510.19850.pdf"
     ))
-    ic(result)
     
