@@ -47,3 +47,8 @@ paper_target_section_select_chain = define_chat_prompt_chain(
     using_prompt=PAPER_PROMPTS["PAPER_TARGET_SECTION_SELECT_PROMPT"],
     llm_model=LLM_MODEL
 )
+
+paper_using_section_select_chain = define_chat_prompt_chain(
+    using_prompt=PAPER_PROMPTS["PAPER_USING_SECTION_SELECT_PROMPT"],
+    llm_model=LLM_MODEL
+)
