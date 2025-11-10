@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 
 import wget
 
@@ -23,6 +22,7 @@ async def paper_pdf_download(paper_id:str):
     pdf_file_name = f"{paper_id}.pdf"
     http_pdf_url_format = f"https://arxiv.org/pdf/{pdf_file_name}"
     pdf_download_path = os.path.join(str(PDF_DOWNLOAD_PATH), pdf_file_name)
+    print("pdf_download_path: ", str(pdf_download_path))
     if not check_directory(PDF_DOWNLOAD_PATH): # 상위 디렉토리 체크 및 생성
         mkdir_directory(PDF_DOWNLOAD_PATH)
     wget.download(http_pdf_url_format, pdf_download_path)
@@ -32,7 +32,7 @@ async def paper_pdf_download(paper_id:str):
 if __name__ == "__main__":
     import asyncio
 
-    paper_id = "2507.10524"
+    paper_id = "2504.06895"
     asyncio.run(paper_pdf_download(
         paper_id,
     ))
