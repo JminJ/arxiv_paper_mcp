@@ -1,4 +1,5 @@
 import os
+from re import S
 import traceback
 from typing import Dict, List
 
@@ -12,6 +13,7 @@ from src.arxiv_paper_mcp.utils.common.pdf_handling import (
     get_target_paper_section_file_path,
 )
 from src.arxiv_paper_mcp.utils.paper_utils.paper_analysis_utils import (
+    analyze_multi_papers,
     analyze_target_paper,
 )
 from src.arxiv_paper_mcp.utils.paper_utils.paper_download_utils import (
@@ -113,6 +115,32 @@ async def descrive_paper_content(
     llm_result = await analyze_target_paper(
         paper_id,
         section_names,
+        raw_user_question
+    )
+
+    return llm_result
+
+
+@mcp_server.tool(
+    name="descrive_multi_paper_content",
+    description="Descrive multi paper content for answering user question."
+)
+async def descrive_multi_paper_content(
+    paper_ids:List[str],
+    raw_user_question:str
+)->str:
+    """논문 여러개를 기반으로 사용자가 설명/비교하고 싶을 때 답변하기 위한 Tool.
+    로직 내부에서 논문 별 필요한 섹션명을 판단, 해당 content들로 답변을 수행함.
+
+    Args:
+        paper_ids (List[str]): 분석 대상 논문 id들
+        raw_user_question (str): 사용자 질문 내용 원본
+
+    Returns:
+        str: llm의 설명 내용
+    """
+    llm_result = await analyze_multi_papers(
+        paper_ids,
         raw_user_question
     )
 
